@@ -1,0 +1,155 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.ibm.watson</groupId>
+  <artifactId>javasig-demo</artifactId>
+  <version>0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>javasig-demo</name>
+  <description>An example Watson Application for the NY Java SIG</description>
+  <url>https://github.com/pridkett/javasig-demo</url>
+  <inceptionYear>2015</inceptionYear>
+  <developers>
+    <developer>
+      <name>Patrick Wagstrom</name>
+      <email>pwagstro@us.ibm.com</email>
+      <url>http://patrick.wagstrom.net/</url>
+    </developer>
+  </developers>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <slf4j.version>1.7.13</slf4j.version>
+    <junit.version>4.12</junit.version>
+    <logback.version>1.1.3</logback.version>
+    <args4j.version>2.0.16</args4j.version>
+    <findbugs.version>3.0.3</findbugs.version>
+    <pmd.version>3.5</pmd.version>
+    <watsondevelopercloud.version>2.1.1-SNAPSHOT</watsondevelopercloud.version>
+    <vorbisspi.version>1.0.3-1</vorbisspi.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>args4j</groupId>
+      <artifactId>args4j</artifactId>
+      <version>${args4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.ibm.watson.developer_cloud</groupId>
+      <artifactId>java-sdk</artifactId>
+      <version>${watsondevelopercloud.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.4</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <directory>${basedir}/target</directory>
+    <finalName>${project.artifactId}-${project.version}</finalName>
+    <resources>
+      <!-- don't pack logback.xml into the jar file
+           see: http://stackoverflow.com/questions/5637532/maven-how-to-place-resource-file-together-with-jar
+      -->
+      <resource>
+        <directory>src/main/resources</directory>
+        <excludes>
+          <exclude>logback.xml</exclude>
+        </excludes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>logback.xml</include>
+        </includes>
+        <!-- location is relative to target/classes -->
+        <targetPath>..</targetPath>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptors>
+            <descriptor>src/assembly/standalone.xml</descriptor>
+            <!-- <descriptor>src/assembly/distribution.xml</descriptor> -->
+          </descriptors>
+          <finalName>${project.artifactId}-${project.version}</finalName>
+          <outputDirectory>target</outputDirectory>
+          <workDirectory>target/assembly/work</workDirectory>
+          <tarLongFileMode>warn</tarLongFileMode>
+          <archive>
+            <manifest>
+              <mainClass>com.ibm.watson.watsondemo.Demo</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+        <version>${findbugs.version}</version>
+        <configuration>
+          <findbugsXmlOutput>true</findbugsXmlOutput>
+          <findbugsXmlWithMessages>true</findbugsXmlWithMessages>
+          <xmlOutput>true</xmlOutput>
+          <effort>Max</effort>
+          <threshold>Low</threshold>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>${pmd.version}</version>
+        <configuration>
+          <linkXRef>false</linkXRef>
+          <sourceEncoding>utf-8</sourceEncoding>
+          <minimumTokens>100</minimumTokens>
+          <targetJdk>1.6</targetJdk>
+          <verbose>true</verbose>
+          <rulesets>
+            <ruleset>ruleset.xml</ruleset>
+          </rulesets>
+          <minimumPriority>10</minimumPriority>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

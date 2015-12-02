@@ -1,0 +1,10 @@
+com.ibm.watson.watsondemo.nlclassifier.username=
+com.ibm.watson.watsondemo.nlclassifier.password=
+com.ibm.watson.watsondemo.nlclassifier.instance=
+com.ibm.watson.watsondemo.tts.username=
+com.ibm.watson.watsondemo.tts.password=
+com.ibm.watson.watsondemo.tts.voice=
+com.ibm.watson.watsondemo.stt.username=
+com.ibm.watson.watsondemo.stt.password=
+com.ibm.watson.watsondemo.lt.username=
+com.ibm.watson.watsondemo.lt.password=

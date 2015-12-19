@@ -65,6 +65,26 @@ function createService() {
     outputCredentials $SERVICE_PREFIX.password $SERVICE_PASSWORD
 }
 
+function trainClassifier() {
+    SERVICE_PREFIX=$1
+    CLASSIFIER_NAME="sports"
+    CLASSIFIER_LANGUAGE="en-us"
+    CLASSIFIER_TRAINING_FILE="../data/training.csv"
+    TRAIN_SCRIPT="../train-classifier.sh"
+    
+    if [ ! -f $CLASSIFIER_TRAINING_FILE ]; then
+        CLASSIFIER_TRAINING_FILE="data/training.csv"
+    fi
+
+    if [ ! -f $TRAIN_SCRIPT ]; then
+        TRAIN_SCRIPT="./train-classifier.sh"
+    fi
+
+    CLASSIFIER_ID=$($TRAIN_SCRIPT $CLASSIFIER_NAME $CLASSIFIER_LANGUAGE $CLASSIFIER_TRAINING_FILE | cut -d ',' -f 1)
+    outputCredentials $SERVICE_PREFIX.instance $CLASSIFIER_ID
+    echo "Training classifier with id: $CLASSIFIER_ID"
+}
+
 # Speech to Text
 createService speech_to_text standard demo-stt com.ibm.watson.watsondemo.stt
 
@@ -76,3 +96,6 @@ createService language_translation standard demo-lt com.ibm.watson.watsondemo.lt
 
 # Natural Language Classifier
 createService natural_language_classifier standard demo-nlc com.ibm.watson.watsondemo.nlclassifier
+
+# Create the classifier
+trainClassifier com.ibm.watson.watsondemo.nlclassifier

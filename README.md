@@ -5,11 +5,6 @@ Copyright (c) 2015 IBM Corporation
 
 Patrick Wagstrom <pwagstro@us.ibm.com>
 
-***IMPORTANT: While Making This Demo Application I Discovered a Few Defects in
- the [Watson Developer Cloud Java SDK][wdc-sdk]. This required the use of a
- patched library, which is not yet publicly available. This will be remedied
- soon.***
-
 This is a simple little demo application that I created to show off a handful
 of Watson Developer Cloud services and how you can stitch them together to
 make intelligent cognitive applications. In particular, this application uses:
@@ -25,27 +20,101 @@ Installation and Setup
 Due to some interesting challenges that I had with getting audio to play back
 using the standard Java APIs, this application only runs on Macs and Linux and
 expects there to be a command `/usr/local/bin/play` that can accept a standard
-wav file when sent over stdin.
+wav file when sent over stdin. It's my hope that this restriction will be
+eased in the future.
 
-Beyond that, you'll need to go to [IBM Bluemix][bluemix] and create an instance
-of the following services:
+### Installing the Development Version of the Watson Developer Cloud Java SDK
+Because this uses a couple of brand new features and bug fixes of the
+[Watson Developer Cloud SDK][wdc-sdk], you'll first need to download and compile
+the development branch of that code.
 
-* [Speech to Text][bm-stt]
-* [Text to Speech][bm-tts]
-* [Language Translation][bm-lt]
-* [Natural Language Classifier][nlc-lt]
+First, go to a different directory and do the base checkout from GitHub:
 
-You'll then need to copy the service credentials for each provisioned service
-into the appropriate spots in `configuration.properties`.
+    git clone https://github.com/watson-developer-cloud/java-sdk.git
 
+Next, you'll need to switch to the Development branch:
+
+    cd java-sdk
+    git checkout dev
+
+Finally, you'll want to compile the code. While the SDK has a lot of tests,
+many of them hit up live system resources - which means you'll need to have
+properties files configured for nearly all of the Watson Developer Cloud
+services. This is a lot of overhead, so for now we'll assume that the code
+is well tested.
+
+    mvn -DskipTests clean compile package install
+
+When you're dont go back to the directory where you've checked out this code.
+
+### Compiling this Tool
+
+    mvn clean compile package
+
+### Service Instantiation Through Bluemix
+The first thing that you'll need to do is to sign up for an account with
+[IBM Bluemix][bluemix]. All accounts are given a free 30 day trial when they
+sign up. In addition to the free 30 day trial, most services have generous
+amounts of free service calls that should be enough for you to develop against.
+
+Because we're going to run this application from our local command line, you
+just need to create the services, but don't need to bind them to anything.
+As we create the services, we'll fill in their credentials in `configuration.properties.template
+The first thing that you'll need to do is to sign up for an account with
+[IBM Bluemix][bluemix]. All accounts are given a free 30 day trial when they
+sign up. In addition to the free 30 day trial, most services have generous
+amounts of free service calls that should be enough for you to develop against.
+
+Because we're going to run this application from our local command line, you
+just need to create the services, but don't need to bind them to anything.
+As we create the services, we'll fill in their credentials in
+`configuration.properties.template`.
+
+0. Copy `configuration.properties.template` to `configuration.properties`.
+
+1. Start out by clicking on "Catalog" on the menu bar at the top of the Bluemix
+page. This brings you to the list of boilerplates, runtimes, and services that
+you can use to build your application.
+
+2. Scroll down to the Watson section and select "Language Translation".
+
+3. The default settings should be fine, although if you want you can give your
+instance of language translation a fancier name like "Demo Language Translation".
+When you're ready click the "Create" button on the right hand side of the page.
+
+4. This will create an instance of the Language Translation service in your
+primary Bluemix space. On the left hand side you can click on "Service Credentials"
+to get the username and the API key required to access your service instance.
+
+5. Copy the `username` and `password` fields into the fields `com.ibm.watson.watsondemo.lt.username`
+and `com.ibm.watson.watsondemo.lt.password` in `configuration.properties`. You
+should not include the quotes around those fields.
+
+6. Repeat steps 3 - 6 for `Speech to Text, Text to Speech, and Natural Language
+Classifer. In each step you'll copy the username and password into the `stt`,
+`tts`, and `nlclassifier` fields as appropriate.
+
+7. You should have one remaining entry that is unfilled:
+`com.ibm.watson.watsondemo.nlclassifier.instance`. If that's the case then
+you've done everything right up to this point.
+
+### Training Your Natural Language Classifier Instance
 Finally, you'll need to train an instance of the Natural Language Classifier
 Service using the data contained in `data/training.csv`. This is a little bit
 beyond the scope of this document, but it involves some fun with REST calls
 or the use of a few pieces of experimental tooling.
 
-Once you have all those setup you can compile the application using the following
-commands: `mvn clean compile package`. Right now there are no tests. This is really
-a bit of a hack to show how things can work.
+    ./train-classifier.sh sports en-us data/training.csv
+
+### Scripting Everything from the Command Line
+
+Bluemix is based on [CloudFoundry][cloudfoundry], the successful Open Source
+Platform as a Service (PaaS) software. In addition to interacting with the
+web page catalog, Bluemix work with the standard [CloudFoundry command line
+interface (CLI)][cfcli]. If you already have the CLI installed and have
+logged in then you can run the command `./bin/setup.sh` and instances of all
+of the software will be provisioned and their credentials will be pasted
+into a new `configuration.properties` file.
 
 Usage
 -----
@@ -80,3 +149,5 @@ Licensed under the terms of the Apache 2 License
 [bm-lt]: https://console.ng.bluemix.net/catalog/services/language-translation/
 [nlc-lt]: https://console.ng.bluemix.net/catalog/services/natural-language-classifier/
 [bluemix]: https://www.bluemix.net/
+[cfcli]: https://github.com/cloudfoundry/cli
+[cloudfoundry]: https:/www.cloudfoundry.org/

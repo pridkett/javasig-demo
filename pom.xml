@@ -27,7 +27,7 @@
     <args4j.version>2.0.16</args4j.version>
     <findbugs.version>3.0.3</findbugs.version>
     <pmd.version>3.5</pmd.version>
-    <watsondevelopercloud.version>2.1.1-SNAPSHOT</watsondevelopercloud.version>
+    <watsondevelopercloud.version>2.3.0</watsondevelopercloud.version>
     <vorbisspi.version>1.0.3-1</vorbisspi.version>
   </properties>
 

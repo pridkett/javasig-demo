@@ -146,7 +146,7 @@ public class Demo {
                         output("I think you said: " + line);
                         playTts("I think you said: " + line);
                     } else {
-                        if (!outputLanguage.equals("en")) {
+                        if (!inputLanguage.equals("en")) {
                             line = translateInput(line);
                             output(line);
                         }

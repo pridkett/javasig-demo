@@ -23,30 +23,6 @@ expects there to be a command `/usr/local/bin/play` that can accept a standard
 wav file when sent over stdin. It's my hope that this restriction will be
 eased in the future.
 
-### Installing the Development Version of the Watson Developer Cloud Java SDK
-Because this uses a couple of brand new features and bug fixes of the
-[Watson Developer Cloud SDK][wdc-sdk], you'll first need to download and compile
-the development branch of that code.
-
-First, go to a different directory and do the base checkout from GitHub:
-
-    git clone https://github.com/watson-developer-cloud/java-sdk.git
-
-Next, you'll need to switch to the Development branch:
-
-    cd java-sdk
-    git checkout dev
-
-Finally, you'll want to compile the code. While the SDK has a lot of tests,
-many of them hit up live system resources - which means you'll need to have
-properties files configured for nearly all of the Watson Developer Cloud
-services. This is a lot of overhead, so for now we'll assume that the code
-is well tested.
-
-    mvn -DskipTests clean compile package install
-
-When you're dont go back to the directory where you've checked out this code.
-
 ### Compiling this Tool
 
     mvn clean compile package

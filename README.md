@@ -1,9 +1,9 @@
-Watson Demo Application for New York Java SIG
-=============================================
+Watson Demo Application
+=======================
 
-Copyright (c) 2015 IBM Corporation
+Copyright (c) 2015-2016 IBM Corporation
 
-Patrick Wagstrom <pwagstro@us.ibm.com>
+Patrick Wagstrom &lt;pwagstro@us.ibm.com&gt;
 
 This is a simple little demo application that I created to show off a handful
 of Watson Developer Cloud services and how you can stitch them together to
@@ -35,7 +35,7 @@ amounts of free service calls that should be enough for you to develop against.
 
 Because we're going to run this application from our local command line, you
 just need to create the services, but don't need to bind them to anything.
-As we create the services, we'll fill in their credentials in `configuration.properties.template
+As we create the services, we'll fill in their credentials in `configuration.properties.template`
 The first thing that you'll need to do is to sign up for an account with
 [IBM Bluemix][bluemix]. All accounts are given a free 30 day trial when they
 sign up. In addition to the free 30 day trial, most services have generous
@@ -95,7 +95,7 @@ into a new `configuration.properties` file.
 Usage
 -----
 
-To run the app just type: `./javasig-demo.sh`. By default it's expecting English
+To run the app just type: `./watson-demo.sh`. By default it's expecting English
 language input. Just type in your text it will be classified by Watson.
 
 Here's a few more helpful commands:

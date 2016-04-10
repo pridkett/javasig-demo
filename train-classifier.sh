@@ -1,3 +1,3 @@
 #!/bin/bash
 
-target/javasig-demo-*-standalone/bin/train-classifier.sh $@
+target/watson-demo-*-standalone/bin/train-classifier.sh $@
